@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.http import Http404
+from django.contrib import messages
+from django.views.decorators.http import require_POST
 
 def register_view(request):
     register_form_data = request.session.get('register_form_data', None)
@@ -10,12 +12,21 @@ def register_view(request):
         'form': form,
     })
 
+@require_POST
 def register_create(request):
-    if not request.POST:
-        raise Http404()
-    
     POST = request.POST
     request.session['register_form_data'] = POST
     form = RegisterForm(POST)
 
-    return redirect('authors:register')
+    if form.is_valid():
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data['password'])  # Criptografa a senha
+        user.save()
+        messages.success(request, 'Your user is created, please log in.')
+        del request.session['register_form_data']  # Remove os dados da sessão
+        return redirect('authors:register')  # Redireciona somente após o sucesso
+
+    # Renderiza novamente a página com os erros de validação
+    return render(request, 'authors/pages/register_view.html', {
+        'form': form,
+    })
