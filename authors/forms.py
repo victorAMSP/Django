@@ -13,25 +13,49 @@ def add_placeholder(field, placeholder_val):
         add_attr(field, 'placeholder', placeholder_val)
 
 class RegisterForm(forms.ModelForm):
-    confirm_password = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Repeat your password'
-        }),
+    username = forms.CharField(
+        error_messages={'required': 'Username is required'},
+        label='Username',
         required=True,
+        help_text=(
+            'Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.'
+        ),
+    )
+    first_name = forms.CharField(
+        error_messages={'required': 'First name is required'},
+        label='First name',
+        required=True,
+    )
+    last_name = forms.CharField(
+        error_messages={'required': 'Last name is required'},
+        label='Last name',
+        required=True,
+    )
+    email = forms.EmailField(
+        error_messages={'required': 'E-mail is required'},
+        label='E-mail',
+        help_text='The e-mail must be valid.',
+        required=True,
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(),
+        required=True,
+        error_messages={
+            'required': 'Confirm password is required'},
+        label= 'Confirm password',
     )
 
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Your password'
-        }),
+        widget=forms.PasswordInput(),
         required=True,
         error_messages={
-            'required': 'Password must not be empty.'
+            'required': 'Password is required'
         },
         help_text=(
             "Password must have at least one uppercase letter, "
             "one lowercase letter, one number, and at least 8 characters."
-        )
+        ),
+        label= 'Password',
     )
 
     class Meta:
@@ -42,6 +66,7 @@ class RegisterForm(forms.ModelForm):
             'username',
             'email',
             'password',
+            'confirm_password',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -51,6 +76,8 @@ class RegisterForm(forms.ModelForm):
             'email': 'Your e-mail',
             'first_name': 'Ex.: Jhon',
             'last_name': 'Ex.: Doe',
+            'password': 'Your password',
+            'confirm_password': 'Repeat your password'
         }
         for field_name, placeholder in placeholders.items():
             add_placeholder(self.fields.get(field_name), placeholder)
