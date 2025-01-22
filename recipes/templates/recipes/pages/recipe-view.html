@@ -1,10 +1,10 @@
-{% include 'recipes/partials/head.html' %}
+{% include 'global/partials/head.html' %}
 
 {% block title %}{{ recipe.title }} | {% endblock title %}
 
 <body>
-    {% include 'recipes/partials/header.html' %}
-    {% include 'recipes/partials/search.html' %}
+    {% include 'global/partials/header.html' %}
+    {% include 'global/partials/search.html' %}
 
     <main class="main-content-container">
         <div class="main-content main-teste container">
@@ -12,7 +12,7 @@
         </div>
     </main>
 
-    {% include 'recipes/partials/footer.html' %}
+    {% include 'global/partials/footer.html' %}
 </body>
 
 </html>

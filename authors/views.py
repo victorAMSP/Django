@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm
+from .forms import RegisterForm, LoginForm
 from django.http import Http404
 from django.contrib import messages
 from django.views.decorators.http import require_POST
@@ -11,7 +11,7 @@ def register_view(request):
     
     return render(request, 'authors/pages/register_view.html', {
         'form': form,
-        'form_action': reverse('authors:create'),
+        'form_action': reverse('authors:register_create'),
     })
 
 @require_POST
@@ -32,3 +32,15 @@ def register_create(request):
     return render(request, 'authors/pages/register_view.html', {
         'form': form,
     })
+
+def login_view(request):
+
+    form = LoginForm()
+
+    return render(request, 'authors/pages/login.html', {
+        'form': form,
+        'action_form': reverse('authors:login_create')
+    })
+
+def login_create(request):
+    return render(request, '')
