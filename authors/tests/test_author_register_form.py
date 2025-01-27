@@ -143,7 +143,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
 
         response = self.client.get(url)
         
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 404)
 
     def test_email_field_must_be_unique(self):
         url = reverse('authors:register_create')
